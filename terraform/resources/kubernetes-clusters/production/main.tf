@@ -1,7 +1,7 @@
 terraform {
   backend "gcs" {
     bucket      = "dcc-tf-state"
-    prefix      = "terraform/resources/kubernetes-clusters/non-production/development/states.tfstate"
+    prefix      = "terraform/resources/kubernetes-clusters/production/states.tfstate"
   }
 }
 
@@ -22,12 +22,12 @@ module "kube_cluster" {
   ip_range_services = var.ip_range_services_name
   node_pools = [
     {
-      name                      = "non-prod-node-pool"
-      machine_type              = "e2-small"
+      name                      = "prod-node-pool"
+      machine_type              = "e2-standard-2"
       node_locations            = "us-west2-a,us-west2-b,us-west2-c"
-      min_count                 = 1
-      max_count                 = 2
-      disk_size_gb              = 30
+      min_count                 = 3
+      max_count                 = 5
+      disk_size_gb              = 60
     },
   ]
 }

@@ -1,13 +1,11 @@
 terraform {
   backend "gcs" {
     bucket      = "dcc-tf-state"
-    prefix      = "terraform/kubernetes_cluster"
-    credentials = "../../dcc-322208-ab2e0dc1b1f7.json"
+    prefix      = "terraform/resources/kubernetes-clusters/non-production/staging/states.tfstate"
   }
 }
 
 provider "google" {
-  credentials = file("../../dcc-322208-ab2e0dc1b1f7.json")
   project     = var.project_id
   region      = var.region
 }
