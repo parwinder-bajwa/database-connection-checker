@@ -42,7 +42,7 @@ pipeline {
           kubectl apply -f app-deployment.yaml
           kubectl apply -f app-service.yaml
           sleep 5
-          kubectl get pods
+          kubectl get pods -n application
         '''                 
         }
     }
