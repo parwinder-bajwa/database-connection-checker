@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-ini
+  namespace: tools
+  labels:
+    app: grafana
+data:
+  grafana.ini: |
+    [smtp]
+      enabled = true
+      host = smtp.gmail.com:587
+      user = alerting.dcc@gmail.com #change to your email address
+      password  = "" #please fill the password accordingly
+      skip_verify  = true
+      from_address = alerting.dcc@gmail.com #change to your email address
+      from_name = grafana

@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Git Checkout'){
         steps{
-            git credentialsId: 'dcc', url: 'https://github.com/parwinder-bajwa/database-connection-checker/'
+            git credentialsId: 'dcc', url: 'https://github.com/parwinder-bajwa/database-connection-checker'
         }
     }
     stage('Build our image') {

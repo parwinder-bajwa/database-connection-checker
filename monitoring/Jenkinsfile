@@ -1,0 +1,60 @@
+pipeline{
+    agent any
+
+    environment {
+
+        SVC_ACCOUNT_KEY = credentials('gcp-auth')
+
+    }
+    stages{
+        stage('Git Checkout'){
+            steps{
+                git credentialsId: 'dcc', url: 'https://github.com/parwinder-bajwa/database-connection-checker'
+            }
+        }
+        stage('PROMETHEUS'){
+            steps{
+                dir("${env.WORKSPACE}/monitoring/prometheus") {
+                    sh '''
+                        kubectl apply -f prometheus-cluster-role.yaml
+                        kubectl apply -f prometheus-config-map.yaml
+                        kubectl apply -f prometheus-deployment.yaml
+                        kubectl apply -f prometheus-service.yaml
+                        sleep 5
+                        kubectl get pods -n tools
+                    '''
+            }
+          }
+        }
+        stage('NODE EXPORTER'){
+            steps{
+                dir("${env.WORKSPACE}/monitoring/node-exporter") {
+                    sh '''
+                        kubectl apply -f node-exporter-daemon-set.yaml
+                        kubectl apply -f node-exporter-service.yaml
+                        sleep 5
+                        kubectl get pods -n tools
+                    '''
+            }
+          }
+            
+        }
+
+        stage('GRAFANA'){
+            steps{
+                dir("${env.WORKSPACE}/monitoring/grafana") {
+                    sh '''
+                        kubectl apply -f grafana-config-map.yaml
+                        kubectl apply -f grafana-config-ini.yaml
+                        kubectl apply -f grafana-deployment.yaml
+                        kubectl apply -f grafana-service.yaml
+                        sleep 5
+                        kubectl get pods -n tools
+                    '''
+            }
+          }
+      
+        }
+
+    }
+}
